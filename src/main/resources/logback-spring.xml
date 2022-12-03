@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!--获取spring环境中的参数(logback优先于application加载,直接获取${param}是拿不到变量的)-->
+    <!--日志所在目录-->
+    <springProperty scope="context" name="LOG_HOME" source="logging.file.path"/>
+    <!--应用名-->
+    <springProperty scope="context" name="APP_NAME" source="spring.application.name"/>
+
+    <!--控制台-->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="com.yomahub.tlog.core.enhance.logback.AspectLogbackEncoder">
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度 %logger输出日志的logger名 %msg：日志消息，%n是换行符 -->
+            <pattern>%d %highlight(%-5level) [%thread] %cyan(%logger{50}): %msg%n</pattern>
+            <!--解决乱码问题-->
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!--异常日志文件,滚动日志-->
+    <appender name="ERROR-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append>
+        <file>${LOG_HOME}/${APP_NAME}/error.log</file>
+        <!-- ThresholdFilter:临界值过滤器，过滤掉 TRACE 和 DEBUG 级别的日志 -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/${APP_NAME}/error.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>30</maxHistory><!--保存最近30天的日志-->
+        </rollingPolicy>
+        <encoder class="com.yomahub.tlog.core.enhance.logback.AspectLogbackEncoder">
+            <charset>UTF-8</charset>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] %-5level %logger{50} : %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="APP-DEFAULT-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append>
+        <file>${LOG_HOME}/${APP_NAME}/app-default.log</file>
+        <!-- ThresholdFilter:临界值过滤器，过滤掉 TRACE 和 DEBUG 级别的日志 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/${APP_NAME}/app-default.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>30</maxHistory><!--保存最近30天的日志-->
+        </rollingPolicy>
+        <encoder class="com.yomahub.tlog.core.enhance.logback.AspectLogbackEncoder">
+            <charset>UTF-8</charset>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] %-5level %logger{50} : %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="SPRING-APPENDER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append>
+        <file>${LOG_HOME}/${APP_NAME}/spring.log</file>
+        <!-- ThresholdFilter:临界值过滤器，过滤掉 TRACE 和 DEBUG 级别的日志 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_HOME}/${APP_NAME}/spring.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>30</maxHistory><!--保存最近30天的日志-->
+        </rollingPolicy>
+        <encoder class="com.yomahub.tlog.core.enhance.logback.AspectLogbackEncoder">
+            <charset>UTF-8</charset>
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [%thread] %-5level %logger{50} : %msg%n</pattern>
+        </encoder>
+    </appender>
+
+
+    <!--这里如果是info，spring、mybatis等框架则不会输出：TRACE < DEBUG < INFO <  WARN < ERROR-->
+    <!--root是所有logger的祖先，均继承root，如果某一个自定义的logger没有指定level，就会寻找
+    父logger看有没有指定级别，直到找到root。-->
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="ERROR-APPENDER"/>
+        <appender-ref ref="APP-DEFAULT-APPENDER"/>
+    </root>
+
+    <logger name="org.springframework" additivity="false" level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="SPRING-APPENDER"/>
+    </logger>
+
+</configuration>

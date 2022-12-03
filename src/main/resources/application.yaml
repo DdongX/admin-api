@@ -1,0 +1,31 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /adminapi
+spring:
+  application:
+    name: admin
+  messages:
+    basename: i18n/messages
+    encoding: UTF-8
+    fallbackToSystemLocale: true
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/admin?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
+    username: root
+    password: Xxd@1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: Xxd@1234
+    connect-timeout: 10s
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-field: isDel # 全局逻辑删除的实体字段名(since 3.3.0,配置后可以忽略不配置步骤2)
+      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+logging:
+  file:
+    path: ./logs
