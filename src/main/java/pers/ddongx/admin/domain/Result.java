@@ -21,8 +21,6 @@ public class Result {
     private long timestamp;
     @Schema(name = "uri", description = "请求地址")
     private String uri;
-    @Schema(name = "requestId", description = "请求ID")
-    private String requestId;
 
     public Result() {
     }
@@ -76,14 +74,6 @@ public class Result {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
-    }
-
-    public String getRequestId() {
-        return this.requestId;
-    }
-
-    public void setRequestId(String requestId) {
-        this.requestId = requestId;
     }
 
     public String getUri() {

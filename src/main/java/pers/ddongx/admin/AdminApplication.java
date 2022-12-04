@@ -10,7 +10,7 @@ import pers.ddongx.admin.util.LogUtil;
  * @author DdongX
  * @since 2022/12/3
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "pers.ddongx.admin")
 public class AdminApplication {
 
     public static void main(String[] args) {
