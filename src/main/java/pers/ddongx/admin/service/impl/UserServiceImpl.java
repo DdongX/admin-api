@@ -1,10 +1,11 @@
 package pers.ddongx.admin.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import pers.ddongx.admin.domain.entity.User;
 import pers.ddongx.admin.mapper.UserMapper;
-import pers.ddongx.admin.service.UserService;
+import pers.ddongx.admin.service.IUserService;
 
 /**
  * description 针对表【user】的数据库操作Service实现
@@ -14,8 +15,12 @@ import pers.ddongx.admin.service.UserService;
  */
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User>
-        implements UserService {
+        implements IUserService {
 
+    @Override
+    public User getByUserName(String userName) {
+        return getOne(new LambdaQueryWrapper<User>().eq(User::getName, userName));
+    }
 }
 
 

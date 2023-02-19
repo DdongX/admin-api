@@ -8,7 +8,12 @@ public enum AdminExceptionCode implements ExceptionCode {
     /**
      * 服务异常
      */
-    SERVICE_ERROR("500", "SERVICE_ERROR");
+    SERVICE_ERROR("500", "SERVICE_ERROR"),
+
+    /**
+     * 服务异常
+     */
+    ACCOUNT_LOCK("402", "ACCOUNT_LOCK");
 
     private final String code;
 

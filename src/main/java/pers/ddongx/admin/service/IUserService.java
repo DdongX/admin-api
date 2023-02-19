@@ -9,6 +9,13 @@ import pers.ddongx.admin.domain.entity.User;
  * @author DdongX
  * @since 2022-12-04 17:10:17
  */
-public interface UserService extends IService<User> {
+public interface IUserService extends IService<User> {
+    /**
+     * 根据用户名获取用户详细相信
+     *
+     * @param userName 用户名
+     * @return 用户详情
+     */
+    User getByUserName(String userName);
 
 }

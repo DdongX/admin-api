@@ -1,5 +1,7 @@
 package pers.ddongx.admin.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -7,6 +9,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import pers.ddongx.admin.common.security.JwtAuthenticationEntryPoint;
+import pers.ddongx.admin.common.security.JwtAuthenticationFilter;
+import pers.ddongx.admin.common.security.LoginFailureHandler;
+import pers.ddongx.admin.common.security.LoginSuccessHandler;
 
 /**
  * Description: SpringSecurity配置类
@@ -18,11 +26,31 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private LoginSuccessHandler loginSuccessHandler;
+    @Autowired
+    private LoginFailureHandler loginFailureHandler;
+    @Autowired
+    private UserDetailsService userDetailsService;
+    @Autowired
+    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
     private static final String[] URL_WHITELIST = {"/login", "/logout", "/captcha", "/password", "/image/**", "/test/**"};
+
+    @Bean
+    JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
+        return new JwtAuthenticationFilter(authenticationManager());
+    }
+
+    @Bean
+    BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        super.configure(auth);
+        auth.userDetailsService(userDetailsService);
     }
 
     @Override
@@ -32,8 +60,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
                 // 登陆登出配置
                 .formLogin()
-//                .successHandler()
-//                .failureHandler().and().logout().logoutSuccessHandler()
+                .successHandler(loginSuccessHandler)
+                .failureHandler(loginFailureHandler)
+                // .and().logout().logoutSuccessHandler()
 
                 // 禁用session
                 .and()
@@ -43,9 +72,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 // 拦截规则配置
                 .and()
                 .authorizeRequests().antMatchers(URL_WHITELIST).permitAll()
-                .anyRequest().authenticated();
+                .anyRequest().authenticated()
 
-        // 异常处理
-        // 自定义过滤器配置
+                // 异常处理
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                // 自定义过滤器配置
+                .and().addFilter(jwtAuthenticationFilter());
     }
 }
