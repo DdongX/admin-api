@@ -35,10 +35,12 @@ public class MyUserDetailsServiceImpl implements UserDetailsService {
         } else if ("1".equals(user.getStatus())) {
             throw new BaseException(AdminExceptionCode.ACCOUNT_LOCK);
         }
-        return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(), getUserAuthorities());
+        return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(), getUserAuthorities(user.getId()));
     }
 
-    public List<GrantedAuthority> getUserAuthorities() {
+    public List<GrantedAuthority> getUserAuthorities(Long userId) {
+        // 格式要求：角色ROLE_开头,例如ROLE_admin;权限编码，system:user:add
+        String authorityInfo = userService.getUserAuthorityInfo(userId);
         return new ArrayList<>();
     }
 }

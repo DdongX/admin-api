@@ -58,9 +58,11 @@ public class JwtUtil {
             result.setSuccess(true);
             result.setClaims(claims);
         } catch (ExpiredJwtException e) {
+            LogUtil.error(e.getMessage(), e);
             result.setErrorCode(JwtConstant.JWT_ERROR_CODE_EXPIRE);
             result.setSuccess(false);
         } catch (Exception e) {
+            LogUtil.error(e.getMessage(), e);
             result.setErrorCode(JwtConstant.JWT_ERROR_CODE_FAIL);
             result.setSuccess(false);
         }
@@ -84,7 +86,8 @@ public class JwtUtil {
      * @return 实体
      */
     public static Claims parseJwt(String token) {
+        LogUtil.info("token:" + token);
         SecretKey secretKey = generateSecretKey();
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJwt(token).getBody();
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
     }
 }

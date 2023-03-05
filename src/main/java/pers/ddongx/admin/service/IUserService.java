@@ -18,4 +18,11 @@ public interface IUserService extends IService<User> {
      */
     User getByUserName(String userName);
 
+    /**
+     * 获取用户权限
+     *
+     * @param userId 用户ID
+     * @return 权限信息
+     */
+    String getUserAuthorityInfo(Long userId);
 }
