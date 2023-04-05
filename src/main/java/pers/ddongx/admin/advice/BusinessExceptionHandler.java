@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import com.google.common.base.Throwables;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -48,6 +49,9 @@ public class BusinessExceptionHandler implements Ordered {
         } else if (exception instanceof MethodArgumentNotValidException) {
             final MethodArgumentNotValidException e = (MethodArgumentNotValidException) exception;
             result = Result.fail(request, "500", Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage());
+        } else if (exception instanceof AccessDeniedException) {
+            final AccessDeniedException e = (AccessDeniedException) exception;
+            result = Result.fail(request, "401", Objects.requireNonNull(e.getMessage()));
         }
         // 如果result为Null则代表未有命中的异常，则抛出未知异常
         if (result == null) {

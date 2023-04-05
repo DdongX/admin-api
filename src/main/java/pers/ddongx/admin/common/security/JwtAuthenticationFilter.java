@@ -35,7 +35,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 
     private static final String JWT_HEADER_TOKEN = "token";
 
-    private static final String[] URL_WHITELIST = {"/login", "/logout", "/captcha", "/password", "/image/**", "/test/**"};
+    private static final String[] URL_WHITELIST = {"/login", "/logout", "/captcha", "/password", "/image/", "/test/**"};
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
@@ -44,7 +44,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         String token = request.getHeader(JWT_HEADER_TOKEN);
-        if (StrUtil.isBlank(token) && Arrays.asList(URL_WHITELIST).contains(request.getRequestURI())) {
+        if (StrUtil.isBlank(token) && Arrays.stream(URL_WHITELIST).anyMatch(l -> request.getRequestURI().contains(l))) {
             chain.doFilter(request, response);
             return;
         }

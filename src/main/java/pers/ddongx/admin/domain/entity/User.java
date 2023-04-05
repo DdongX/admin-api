@@ -65,6 +65,11 @@ public class User extends BaseEntity implements Serializable {
      */
     @TableField(value = "remark")
     private String remark;
+    /**
+     * 角色,用逗号隔开
+     */
+    @TableField(exist = false)
+    private String roles;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
