@@ -1,6 +1,7 @@
 package pers.ddongx.admin.advice;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.NonNull;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -9,9 +10,7 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import pers.ddongx.admin.domain.Result;
-import pers.ddongx.admin.util.LogUtil;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 
 /**
@@ -26,20 +25,12 @@ public class ResponseBodyHandler implements ResponseBodyAdvice<Object> {
     }
 
     @Override
-    public boolean supports(@Nonnull MethodParameter methodParameter, @Nonnull Class<? extends HttpMessageConverter<?>> aClass) {
+    public boolean supports(@NonNull MethodParameter methodParameter, @NonNull Class<? extends HttpMessageConverter<?>> aClass) {
         return true;
     }
 
     @Override
-    public Object beforeBodyWrite(Object o, @Nonnull MethodParameter methodParameter, @Nonnull MediaType mediaType, @Nonnull Class<? extends HttpMessageConverter<?>> aClass, @Nonnull ServerHttpRequest request, @Nonnull ServerHttpResponse response) {
-        // String类型不能直接包装，所以要进行些特别的处理   否则将出现类型转换异常
-        if (o instanceof String) {
-            try {
-                return this.objectMapper.writeValueAsString(Result.success(request, o));
-            } catch (Exception e) {
-                LogUtil.error(e.getMessage(), e);
-            }
-        }
+    public Object beforeBodyWrite(Object o, @NonNull MethodParameter methodParameter, @NonNull MediaType mediaType, @NonNull Class<? extends HttpMessageConverter<?>> aClass, @NonNull ServerHttpRequest request, @NonNull ServerHttpResponse response) {
 
         if (o instanceof Result) {
             return o;

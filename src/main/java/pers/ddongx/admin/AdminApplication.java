@@ -4,6 +4,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import pers.ddongx.admin.util.LogUtil;
 
+/**
+ * 启动类
+ *
+ * @author Ddong
+ */
 @SpringBootApplication
 public class AdminApplication {
 
@@ -11,9 +16,9 @@ public class AdminApplication {
         try {
             SpringApplication app = new SpringApplication(AdminApplication.class);
             app.run(args);
-            LogUtil.info("AdminApplication App Start !!!!!!");
+            LogUtil.info("项目启动成功ヾ(✿ﾟ▽ﾟ)ノ");
         } catch (Exception e) {
-            LogUtil.error("AdminApplication App Start Failed !!!!!!!!", e);
+            LogUtil.error("项目启动失败(；′⌒`)", e);
             throw e;
         }
     }
