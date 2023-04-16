@@ -57,6 +57,7 @@ public class BaseException extends RuntimeException {
         return this.code;
     }
 
+    @Override
     public String getMessage() {
         return this.message;
     }
