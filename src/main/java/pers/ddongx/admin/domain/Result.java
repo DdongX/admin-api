@@ -1,14 +1,18 @@
 package pers.ddongx.admin.domain;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
 import org.springframework.http.HttpRequest;
 
 import javax.servlet.http.HttpServletRequest;
 
 /**
+ * 统一返回体
+ *
  * @author DdongX
  * @since 2022/11/16
  */
+@Data
 @Schema(name = "Result", description = "统一返回体")
 public class Result {
     @Schema(name = "code", description = "状态值")
@@ -21,11 +25,6 @@ public class Result {
     private long timestamp;
     @Schema(name = "uri", description = "请求地址")
     private String uri;
-    @Schema(name = "requestId", description = "请求ID")
-    private String requestId;
-
-    public Result() {
-    }
 
     public static Result success(HttpRequest request, Object data) {
         Result result = new Result();
@@ -44,53 +43,5 @@ public class Result {
         result.setMessage(message);
         result.setUri(request.getRequestURI());
         return result;
-    }
-
-    public String getCode() {
-        return this.code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public Object getData() {
-        return this.data;
-    }
-
-    public void setData(Object data) {
-        this.data = data;
-    }
-
-    public String getMessage() {
-        return this.message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public long getTimestamp() {
-        return this.timestamp;
-    }
-
-    public void setTimestamp(long timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public String getRequestId() {
-        return this.requestId;
-    }
-
-    public void setRequestId(String requestId) {
-        this.requestId = requestId;
-    }
-
-    public String getUri() {
-        return this.uri;
-    }
-
-    public void setUri(String uri) {
-        this.uri = uri;
     }
 }
