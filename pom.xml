@@ -130,17 +130,16 @@
             <artifactId>sa-token-spring-boot-starter</artifactId>
             <version>1.34.0</version>
         </dependency>
-        <!-- Sa-Token 整合 jwt -->
+        <!-- Sa-Token插件：权限缓存与业务缓存分离 -->
         <dependency>
             <groupId>cn.dev33</groupId>
-            <artifactId>sa-token-jwt</artifactId>
+            <artifactId>sa-token-alone-redis</artifactId>
             <version>1.34.0</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>cn.hutool</groupId>
-                    <artifactId>hutool-json</artifactId>
-                </exclusion>
-            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-dao-redis-fastjson2</artifactId>
+            <version>1.34.0</version>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
