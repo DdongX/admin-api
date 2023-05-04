@@ -2,14 +2,14 @@ package pers.ddongx.admin.config;
 
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @author DdongX
  * @since 2022/11/15
  */
-@AutoConfiguration
+@Configuration
 public class MybatisPlusConfig {
 
     @Bean
