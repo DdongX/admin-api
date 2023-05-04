@@ -51,10 +51,10 @@ public class BusinessExceptionHandler implements Ordered {
             }
         } else if (exception instanceof MethodArgumentNotValidException) {
             final MethodArgumentNotValidException e = (MethodArgumentNotValidException) exception;
-            result = Result.fail(request, "500", Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage());
+            result = Result.fail(request, "501", Objects.requireNonNull(e.getBindingResult().getFieldError()).getDefaultMessage());
         } else if (exception instanceof IllegalArgumentException) {
             final IllegalArgumentException e = (IllegalArgumentException) exception;
-            result = Result.fail(request, "500", Objects.requireNonNull(e.getMessage()));
+            result = Result.fail(request, "502", Objects.requireNonNull(e.getMessage()));
         } else if (exception instanceof NotLoginException) {
             final NotLoginException e = (NotLoginException) exception;
             result = Result.fail(request, "401", Objects.requireNonNull(e.getMessage()));
@@ -67,6 +67,9 @@ public class BusinessExceptionHandler implements Ordered {
         } else if (exception instanceof SaTokenException) {
             final SaTokenException e = (SaTokenException) exception;
             result = Result.fail(request, "500", Objects.requireNonNull(e.getMessage()));
+        } else if (exception instanceof IllegalStateException) {
+            final IllegalStateException e = (IllegalStateException) exception;
+            result = Result.fail(request, "503", Objects.requireNonNull(e.getMessage()));
         }
         // 如果result为Null则代表未有命中的异常，则抛出未知异常
         if (result == null) {
