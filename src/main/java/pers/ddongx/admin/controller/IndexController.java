@@ -7,9 +7,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pers.ddongx.admin.annotation.Log;
 
 /**
  * 测试
+ *
+ * @author DdongX
  */
 @Tag(name = "IndexController", description = "测试Controller")
 @RestController
@@ -17,7 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class IndexController {
 
     @Operation(summary = "测试方法描述")
-    @Parameter(name = "ID", description = "ID")
+    @Log("测试")
+    @Parameter(name = "id", description = "ID")
+//    @SaIgnore
     @GetMapping("/test/{id}")
     public String test(@PathVariable String id) {
 //        throw new BusinessException("测试异常");
